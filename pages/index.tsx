@@ -1,72 +1,73 @@
-import Head from 'next/head'
+import React, { useState } from 'react';
+import Head from 'next/head';
 
 export default function Home() {
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  async function sendMessage() {
+    setLoading(true);
+
+    try {
+      await fetch("/api/hello", {
+        "method": "POST",
+        "headers": { "content-type": "application/json" },
+        "body": JSON.stringify({message})
+      });
+
+      // Give the user some assurance that things work as expected
+      setTimeout(() => {
+        setLoading(false);
+            setSent(true);
+      }, 1000);
+
+      setTimeout(() => {
+        // Clear out the message box
+        setMessage('');
+
+        // Remove the sent veil
+        setSent(false);
+      }, 3000);
+    } catch (error) {
+        // Just in case there was a problem...
+        setLoading(false);
+    }
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-100">
       <Head>
-        <title>Create Next App</title>
+        <title>BitConquest.com - In-Development</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center overflow-hidden">
+        <h1 className="text-4xl font-bold">
+          BitConquest.com
         </h1>
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.tsx
-          </code>
+        <p className="mt-5 text-2xl">
+          This site is currently in-development by
+        </p>
+        <p className="text-2xl">
+          <a className="underline" href="https://samhuckaby.com/" target="_blank">Sam Huckaby</a>
         </p>
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="flex flex-col justify-center items-center mt-10 w-screen p-2 relative">
+          <div className="text-xl mt-2">Questions or Comments?</div>
+          <textarea rows={5} value={message} onChange={(e) => setMessage(e.target.value)} className="w-full md:w-5/12 bg-transparent mt-2 rounded border-solid border border-neutral-700 dark:border-neutral-100"></textarea>
+          <button onClick={sendMessage} className="bg-green-500 dark:bg-green-700 rounded text-neutral-700 dark:text-neutral-100 mt-2 p-2">Message Me</button>
+          <div className={((loading)? 'absolute' : 'hidden') + ` top-0 right-0 bottom-0 left-0 flex flex-col justify-center items-center text-3xl bg-stone-500/50 text-white`}>
+            <div className="inline border-8 h-10 w-10 border-t-black border-r-white border-b-white border-l-white border-solid rounded-full animate-spin">&nbsp;</div>
+          </div>
+          <div className={((sent)? 'absolute' : 'hidden') + ` top-0 right-0 bottom-0 left-0 flex flex-col justify-center items-center text-3xl bg-stone-500/50 text-white`}>
+            Sent!
+          </div>
         </div>
       </main>
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
+      <footer className="flex flex-col items-center justify-center w-full h-24 border-t">
         <a
           className="flex items-center justify-center"
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -76,7 +77,10 @@ export default function Home() {
           Powered by{' '}
           <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
         </a>
+        <div className="samhuckaby-container">
+          Built by <a href="https://samhuckaby.com/" target="_blank" className="text-orange-600">Sam Huckaby</a>
+        </div>
       </footer>
     </div>
-  )
+  );
 }
