@@ -6,3 +6,5 @@ This is a future project that I will develop further when I have a better idea o
 ```bash
 yarn dev
 ```
+
+Deployed on Vercel.
