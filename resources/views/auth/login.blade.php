@@ -43,6 +43,12 @@
                     {{ __('Log in') }}
                 </x-button>
             </div>
+            <div class="w-full flex flex-row justify-center items-center mt-4 border-t border-t-solid border-t-neutral-300 dark:border-t-black">
+                <a href="{{ url('/auth/redirect') }}"
+                   class="inline-block font-semibold text-gray-400 hover:text-black dark:hover:text-white p-4 hover:bg-neutral-300 dark:hover:bg-gray-600 focus:outline focus:outline-2 focus:rounded-sm focus:outline-green-500">
+                    GitHub
+                </a>
+            </div>
         </form>
     </x-authentication-card>
 </x-guest-layout>
