@@ -5,3 +5,41 @@
 [x-cloak] {
     display: none;
 }
+
+/* The rotating glow behind a new domain modal right after collection */
+.glamour-modal::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 130%;
+    height: 110%;
+    background: radial-gradient(ellipse, rgba(241, 184, 80, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    animation: rotate-shadow 8s infinite linear;
+}
+
+@keyframes rotate-shadow {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Shake animation for errors and other attention-needing items */
+@keyframes horizontal-shaking {
+ 0% { transform: translateX(0) }
+ 5% { transform: translateX(5px) }
+ 10% { transform: translateX(-5px) }
+ 15% { transform: translateX(5px) }
+ 20% { transform: translateX(0) }
+ 100% { transform: translateX(0) }
+}
+
+.attention-shake {
+  animation: horizontal-shaking 5s linear;
+}

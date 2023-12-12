@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Domain;
 use App\Services\DnsRecordService;
 use App\Services\DomainColorService;
 use App\Services\DomainScoreService;
@@ -271,7 +272,7 @@ new class extends Component
     #[Validate('required')]
     public bool $verified = false;
 
-    public string $error = '';
+    public $newDomain;
 
     public function store(): void
     {
@@ -295,17 +296,19 @@ new class extends Component
         // Add additional properties to the validated data
         $validated['flair'] = $this->createBase64Image($this->hostname, $this->tld);
         $validated['score'] = $this->score;
-        $validated['verified'] = $this->dnsRecordService->checkDnsTxtRecord($this->hostname.'.'.$this->tld, $teamVerificationKey);
+        $validated['verified'] = $this->dnsRecordService->checkDnsTxtRecord($this->hostname . '.' . $this->tld, $teamVerificationKey);
 
         try {
-            $newDomain = auth()->user()->currentTeam->domains()->create($validated);
+            $this->newDomain = auth()->user()->currentTeam->domains()->create($validated);
         } catch (Exception $e) {
             // Just swallow any possible errors for now (I don't think any exist)
         }
 
         // Let's score this sucker
         $this->domainScoreService = app(DomainScoreService::class);
-        $this->domainScoreService->score($newDomain->id);
+        $this->domainScoreService->score($this->newDomain->id);
+
+        $this->dispatch('show-modal');
 
         $this->hostname = '';
         $this->tld = '';
@@ -314,8 +317,24 @@ new class extends Component
     }
 }; ?>
 
-<div>
-    <!-- We need to display the "pack opening" modal here -->
+<!-- TODO: May not need the hide-modal event after all -->
+<div x-data="{ open: false }" x-cloak x-on:show-modal.window="open = true" x-on:hide-modal.window="open = false">
+    <!-- Collection modal -->
+    @if ($newDomain)
+    <!-- Learn more about x-cloak here: https://alpinejs.dev/directives/cloak -->
+    <div x-cloak x-show="open" class="fixed inset-0 bg-gray-600 flex items-center justify-center z-30 glamour-modal">
+        <div class="relative bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full" x-data="{ collecting: true }">
+            <div x-show="collecting" x-on:click="collecting = false" class="absolute top-0 right-0 bottom-0 left-0 flex flex-row justify-center items-center bg-gray-800 text-neutral-200"><span class="p-4 border border-neutral-200 border-solid">Collect</span></div>
+            <div class="flex flex-col justify-center items-center p-5">
+                <h2 class="text-4xl font-bold dark:text-neutral-200 pb-2">{{ $newDomain->hostname }}.{{ $newDomain->tld }}</h2>
+                <img width="300" height="150" src="data:image/png;base64,{{ $newDomain->flair }}" alt="Flair for {{ $newDomain->hostname }}.{{ $newDomain->tld }}" />
+            </div>
+            <div class="flex flex-row justify-center items-center p-4 border-t border-gray-600">
+                <button x-on:click="open = false; collecting = true" class="border border-solid dark:border-neutral-200 text-white font-bold py-2 px-4 rounded">Close</button>
+            </div>
+        </div>
+    </div>
+    @endif
     <form wire:submit="store" class="flex flex-row justify-center items-start">
         <div class="flex flex-col justify-start items-start grow mt-4 ml-4">
             <input type="text" wire:model="hostname" placeholder="{{ __('yourdomain') }}" class="block w-full text-right border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm" />

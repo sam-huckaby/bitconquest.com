@@ -18,7 +18,6 @@ new class extends Component
         $this->getDomains();
     }
 
-    #[On('domain-collected')]
     public function getDomains(): void
     {
         $teamId = Auth::user()->currentTeam->id;
@@ -37,6 +36,12 @@ new class extends Component
                 $this->dnsRecordService->verifyDomain($domain, $teamCollectionKey);
             }
         }
+    }
+
+    #[On('domain-collected')]
+    public function handleCollection(): void
+    {
+        $this->getDomains();
     }
 
     public function deleteDomain(Domain $domain): void
@@ -75,7 +80,7 @@ new class extends Component
                     <x-dropdown alignment="right">
                         <x-slot name="trigger">
                             <button class="h-[50px] w-[50px] flex flex-row justify-center items-center text-neutral-200 bg-white/20 hover:bg-white/10">
-                                <img src="{{ asset('icons/ThreeDots.svg') }}" alt="Menu Icon">
+                                <x-icon-three-dots class="h-[25px]" />
                             </button>
                         </x-slot>
 
