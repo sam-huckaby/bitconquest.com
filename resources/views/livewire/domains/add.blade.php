@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Domain;
 use App\Services\DnsRecordService;
 use App\Services\DomainColorService;
 use App\Services\DomainScoreService;
@@ -273,6 +272,7 @@ new class extends Component
     public bool $verified = false;
 
     public $newDomain;
+    public $newScore;
 
     public function store(): void
     {
@@ -306,7 +306,7 @@ new class extends Component
 
         // Let's score this sucker
         $this->domainScoreService = app(DomainScoreService::class);
-        $this->domainScoreService->score($this->newDomain->id);
+        $this->newScore = $this->domainScoreService->score($this->newDomain->id);
 
         $this->dispatch('show-modal');
 
@@ -322,15 +322,26 @@ new class extends Component
     <!-- Collection modal -->
     @if ($newDomain)
     <!-- Learn more about x-cloak here: https://alpinejs.dev/directives/cloak -->
-    <div x-cloak x-show="open" class="fixed inset-0 bg-gray-600 flex items-center justify-center z-30 glamour-modal">
-        <div class="relative bg-white dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full" x-data="{ collecting: true }">
-            <div x-show="collecting" x-on:click="collecting = false" class="absolute top-0 right-0 bottom-0 left-0 flex flex-row justify-center items-center bg-gray-800 text-neutral-200"><span class="p-4 border border-neutral-200 border-solid">Collect</span></div>
-            <div class="flex flex-col justify-center items-center p-5">
+    <div x-cloak x-show="open" class="fixed inset-0 bg-neutral-300 dark:bg-neutral-600 flex items-center justify-center z-30 glamour-modal">
+        <div class="min-w-[512px] min-h-[512px] relative flex flex-col justify-start items-center bg-neutral-200 dark:bg-gray-900 rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full" x-data="{ collecting: true }">
+            <div x-show="collecting" x-on:click="collecting = false" class="absolute top-0 right-0 bottom-0 left-0 flex flex-row justify-center items-center bg-gray-300 dark:bg-gray-800 dark:text-neutral-200"><span class="p-4 rounded cursor-pointer border border-neutral-600 dark:border-neutral-200 border-solid">{{ __('Collect') }}</span></div>
+            <div class="grow flex flex-col justify-center items-center p-5">
                 <h2 class="text-4xl font-bold dark:text-neutral-200 pb-2">{{ $newDomain->hostname }}.{{ $newDomain->tld }}</h2>
                 <img width="300" height="150" src="data:image/png;base64,{{ $newDomain->flair }}" alt="Flair for {{ $newDomain->hostname }}.{{ $newDomain->tld }}" />
+                <span class="text-2xl mt-4 dark:text-neutral-200">{{ __('Score:') }} {{ $newScore }}</span>
+                @unless ($newDomain->verified)
+                <span class="text-2xl mt-4 dark:text-neutral-200">{{ __('Pending DNS Verification') }}</span>
+                <!-- TODO: Help text and FAQ page -->
+                @endunless
+                @if ($newDomain->verified)
+                <div class="mt-4 flex flex-row justify-center items-center">
+                    <img src="{{ asset('img/bitconquest-logo.png') }}" alt="Verified Mark" height="40" width="40" />
+                    <span class="text-2xl ml-4 mt-4 dark:text-neutral-200">{{ __('Verified!') }}</span>
+                </div>
+                @endif
             </div>
             <div class="flex flex-row justify-center items-center p-4 border-t border-gray-600">
-                <button x-on:click="open = false; collecting = true" class="border border-solid dark:border-neutral-200 text-white font-bold py-2 px-4 rounded">Close</button>
+                <button x-on:click="open = false; collecting = true" class="border border-solid border-gray-800 dark:border-neutral-200 dark:text-neutral-200 font-bold py-2 px-4 rounded">{{ __('Close') }}</button>
             </div>
         </div>
     </div>

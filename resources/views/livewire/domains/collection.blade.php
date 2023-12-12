@@ -58,10 +58,10 @@ new class extends Component
 
 <div class="mt-6 bg-gray-100/50 dark:bg-gray-900/50 text-neutral-800 dark:text-neutral-200 shadow-sm divide-y rounded-b">
     <div class="w-full grid grid-cols-[75px_1fr_150px_100px_75px] p-4">
-        <div class="font-bold text-center">Verified</div>
-        <div class="font-bold">Domain</div>
-        <div class="font-bold">Score</div>
-        <div class="font-bold">Flair</div>
+        <div class="font-bold text-center">{{ __('Verified') }}</div>
+        <div class="font-bold">{{ __('Domain') }}</div>
+        <div class="font-bold">{{ __('Score') }}</div>
+        <div class="font-bold">{{ __('Flair') }}</div>
         <div class="font-bold"></div>
     </div>
     <div class="w-full flex flex-col pb-4 rounded-b">
@@ -70,7 +70,7 @@ new class extends Component
             <div class="w-full grid grid-cols-[75px_1fr_150px_100px_75px] px-4">
                 <div class="{{ $loop->even ? 'bg-gray-500/10 dark:bg-white/10' : '' }} flex flex-row justify-center items-center py-2">
                     @if ($domain->verified)
-                    <img src="{{ asset('img/bitconquest-logo.png') }}" alt="Copy collection key" height="40" width="40" />
+                    <img src="{{ asset('img/bitconquest-logo.png') }}" alt="Verified Mark" height="40" width="40" />
                     @endif
                 </div>
                 <div class="{{ $loop->even ? 'bg-gray-500/10 dark:bg-white/10' : '' }} flex flex-row justify-start items-center py-2 text-2xl">{{ $domain->hostname }}.{{ $domain->tld }}</div>
@@ -79,14 +79,14 @@ new class extends Component
                 <div class="{{ $loop->even ? 'bg-gray-500/10 dark:bg-white/10' : '' }} py-2 flex flex-row justify-center items-center">
                     <x-dropdown alignment="right">
                         <x-slot name="trigger">
-                            <button class="h-[50px] w-[50px] flex flex-row justify-center items-center text-neutral-200 bg-white/20 hover:bg-white/10">
+                            <button class="h-[50px] w-[50px] flex flex-row justify-center items-center dark:text-neutral-200 bg-white/20 hover:bg-white/10">
                                 <x-icon-three-dots class="h-[25px]" />
                             </button>
                         </x-slot>
 
                         <x-slot name="content">
                             <button wire:click="deleteDomain({{ $domain->id }})" wire:confirm="Are you sure to delete this domain?" class="w-full p-4 hover:bg-red-600">
-                                Delete
+                                {{ __('Delete') }}
                             </button>
                         </x-slot>
                     </x-dropdown>

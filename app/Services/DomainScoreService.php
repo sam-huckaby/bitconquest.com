@@ -12,7 +12,7 @@ class DomainScoreService
         $domain = Domain::where('id', $domainId)->first();
 
         if (!$domain->verified) {
-            return;
+            return $score;
         }
 
         // Domains over 20 characters are essentially valueless. Not sorry. - Sam
@@ -38,5 +38,7 @@ class DomainScoreService
 
         $domain->score = $score;
         $domain->save();
+
+        return $score;
     }
 }
