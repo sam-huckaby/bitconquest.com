@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command(CheckVerifiedDomains::class)->dailyAt("1:00");
-        $schedule->command(CheckUnverifiedDomains::class)->everyMinute();
+        $schedule->command(CheckUnverifiedDomains::class)->dailyAt("2:00");
     }
 
     /**
