@@ -36,13 +36,14 @@ Route::get('/auth/callback', function () {
 
     // If the user that GitHub returned exists in our system, then go ahead and log them in
     if (!$user) {
+        Log::info('GitHub User', ['$githubUser' => $githubUser]);
         // If the user does not exist in our system, create it via Fortify, so the personal team creation is handled
         try {
             $userCreator = new CreateNewUser();
 
             $user = $userCreator->create([
                 'username' => $githubUser->nickname,
-                'name' => $githubUser->name,
+                'name' => $githubUser->name ?? $githubUser->nickname,
                 'email' => $githubUser->email,
                 'password' => '', // Passwords are for the weak
                 'github_id' => $githubUser->id,
@@ -65,6 +66,10 @@ Route::get('/auth/callback', function () {
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/faqs', function () {
+    return view('faqs');
 });
 
 Route::middleware([

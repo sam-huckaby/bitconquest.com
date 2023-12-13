@@ -29,17 +29,22 @@ new class extends Component
 }; ?>
 
 <div class="w-full dark:text-neutral-200">
+    @unless ($totalDomains > 0)
+    <div class="w-full flex flex-row justify-center items-center">Dashboards will start populating as you add domains to your account</div>
+    @endunless
+    @if ($totalDomains > 0)
     <div class="text-2xl mb-4">{{ __('Domain Verification Stats') }}</div>
     <div class="w-full flex flex-row justify-center items-center">
         @foreach ($domains as $kind)
         <div class="{{ $kind->verified ? 'bg-green-400 dark:bg-green-800' : 'bg-blue-400 dark:bg-blue-800' }} h-16 text-neutral-800 dark:text-neutral-200 flex flex-row justify-center items-center" style="width: calc(100% * {{ $kind->count }} / {{$totalDomains}});">
             @unless ($kind->verified)
-            <span class="font-bold">{{ __('Unverified') }}</span>
+            <span class="font-bold">{{ __('Unverified') }} - {{ $kind->count }}</span>
             @endunless
             @if ($kind->verified)
-            <span class="font-bold">{{ __('Verified') }}</span>
+            <span class="font-bold">{{ __('Verified') }} - {{ $kind->count }}</span>
             @endif
         </div>
         @endforeach
     </div>
+    @endif
 </div>

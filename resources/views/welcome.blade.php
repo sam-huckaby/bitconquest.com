@@ -17,7 +17,7 @@
 </head>
 
 <body class="antialiased">
-    <div id="main_container" class="relative sm:flex sm:flex-col sm:justify-start sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <div id="main_container" class="relative sm:flex sm:flex-col sm:justify-start sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-900 selection:bg-green-600 selection:text-white">
         <!-- Top-right nav for the home page -->
         @if (Route::has('login'))
         <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">

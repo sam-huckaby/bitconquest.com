@@ -12,43 +12,16 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+        <div class="relative p-4">
+            <span class="block absolute -top-1 -left-1 z-0 h-[35px] text-8xl font-sans text-gray-300 dark:text-gray-600">"</span>
+            <p class="relative z-1">You can log in however you want, as long as it's with GitHub</p>
+        </div>
+        <div class="px-4 text-right"> - Henry Ford (probably)</div>
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
-
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    {{ __('Log in') }}
-                </x-button>
-            </div>
-            <div class="w-full flex flex-row justify-center items-center mt-4 border-t border-t-solid border-t-neutral-300 dark:border-t-black">
-                <a href="{{ url('/auth/redirect') }}"
-                   class="inline-block font-semibold text-gray-400 hover:text-black dark:hover:text-white p-4 hover:bg-neutral-300 dark:hover:bg-gray-600 focus:outline focus:outline-2 focus:rounded-sm focus:outline-green-500">
-                    GitHub
-                </a>
-            </div>
-        </form>
+        <div class="w-full flex flex-row justify-center items-center p-4 mt-4 border-t border-solid border-neutral-800 dark:border-neutral-200">
+            <a href="{{ url('/auth/redirect') }}" class="flex flex-row justify-center items-center font-semibold text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white p-4 rounded border border-solid border-neutral-800 dark:border-neutral-200 hover:bg-neutral-100 dark:hover:bg-gray-600 focus:outline focus:outline-2 focus:rounded-sm focus:outline-green-500">
+                <x-icon-github class="mr-4" />{{ __('Login with GitHub') }}
+            </a>
+        </div>
     </x-authentication-card>
 </x-guest-layout>

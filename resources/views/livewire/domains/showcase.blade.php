@@ -71,7 +71,7 @@ new class extends Component
 </head>
 
 <body class="antialiased">
-    <div id="main_container" class="relative sm:flex sm:flex-col sm:justify-start sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <div id="main_container" class="relative sm:flex sm:flex-col sm:justify-start sm:items-center min-h-screen bg-center bg-gray-100 dark:bg-gray-900 selection:bg-green-600 selection:text-white">
         <div id="hero_banner_nav" class="w-full h-[72px] p-6 flex flex-row justify-start items-center bg-gradient-to-br from-slate-600 via-slate-800 to-slate-700">
             <img id="hero_logo" src="{{ asset('img/bitconquest-logo.png') }}" alt="Bit Conquest Logo" height="48" width="48" />
             <h2 class="text-4xl text-white">Bit Conquest</h2>
