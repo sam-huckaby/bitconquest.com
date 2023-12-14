@@ -21,7 +21,7 @@ new class extends Component
         $username = request()->username;
 
         // Retrieve the user by username
-        $this->user = User::where('name', $username)->first();
+        $this->user = User::where('username', $username)->first();
 
         if ($this->user) {
             // Retrieve the personal team of the user

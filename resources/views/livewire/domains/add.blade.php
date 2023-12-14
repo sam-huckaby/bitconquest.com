@@ -330,8 +330,7 @@ new class extends Component
                 <img width="300" height="150" src="data:image/png;base64,{{ $newDomain->flair }}" alt="Flair for {{ $newDomain->hostname }}.{{ $newDomain->tld }}" />
                 <span class="text-2xl mt-4 dark:text-neutral-200">{{ __('Score:') }} {{ $newScore }}</span>
                 @unless ($newDomain->verified)
-                <span class="text-2xl mt-4 dark:text-neutral-200">{{ __('Pending DNS Verification') }}</span>
-                <!-- TODO: Help text and FAQ page -->
+                <div class="flex flex-row justify-center items-center text-2xl mt-4 dark:text-neutral-200">{{ __('Pending DNS Verification') }} <a target="_blank" title="Open the FAQs in a new tab" href="/faqs"><x-icon-question-box class="h-4 w-4 ml-4" /></a></div>
                 @endunless
                 @if ($newDomain->verified)
                 <div class="mt-4 flex flex-row justify-center items-center">

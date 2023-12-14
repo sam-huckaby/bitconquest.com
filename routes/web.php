@@ -72,6 +72,10 @@ Route::get('/faqs', function () {
     return view('faqs');
 });
 
+Route::get('/pricing', function () {
+    return view('pricing');
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

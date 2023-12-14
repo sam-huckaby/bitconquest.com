@@ -26,3 +26,4 @@ function checkScroll() {
 
 // Adding scroll event listener to window
 window.addEventListener('scroll', checkScroll);
+window.addEventListener('load', checkScroll);
