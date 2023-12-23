@@ -46,6 +46,7 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
+        // THIS IS PROBABLY THE BEST OPTION FOR MY MODEST EMAIL NEEDS
         'ses' => [
             'transport' => 'ses',
         ],
